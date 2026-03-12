@@ -47,7 +47,7 @@ describe('AppController (e2e)', () => {
       status: 'ok',
       service: 'backend',
     });
-    expect(typeof response.body.time).toBe('string');
+    expect(typeof (response.body as { time: string }).time).toBe('string');
   });
 
   it('/health/db (GET)', async () => {
@@ -69,8 +69,8 @@ describe('AppController (e2e)', () => {
       lastname: `Test-${uniqueSuffix}`,
       email: `e2e.${uniqueSuffix}@example.com`,
     });
-    expect(response.body.id).toBeDefined();
-    createdId = response.body.id;
+    expect((response.body as { id: string }).id).toBeDefined();
+    createdId = (response.body as { id: string }).id;
   });
 
   it('/students (GET)', async () => {
@@ -79,8 +79,8 @@ describe('AppController (e2e)', () => {
       .expect(200);
 
     expect(Array.isArray(response.body)).toBe(true);
-    const found = response.body.find(
-      (student: { id: string }) => student.id === createdId,
+    const found = (response.body as { id: string }[]).find(
+      (student) => student.id === createdId,
     );
     expect(found).toBeDefined();
   });
